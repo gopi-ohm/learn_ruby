@@ -6,7 +6,7 @@ let botFactory = (function(){
         this.sessionAttributes = {};
         this.slideIndex = [];
         this.slideDivId = "oibot_slides_";
-        this.initialChatScript = [{"isbefore":true,"text":"Hi, I'm MattressBot! I'm here to help you find the perfect mattress so you can get a great night's "},
+        this.initialChatScript = [{"isbefore":true,"text":"Hi, I'm MattressBot! I'm here to help you find the perfect mattress so you can get a great night's" + String.fromCodePoint("0x1F634") },
         {"isbefore":false,"text":"Are you ready to find your mattress?" }];
         this.assetsUrl = "https://mattressassets.s3.amazonaws.com/assets/";
 
@@ -181,14 +181,13 @@ let botFactory = (function(){
                 padding-top: 20px;
                 z-index: 10;
               }
-              #oibot_popup {
-    //            display:flex;
+              #oibot_popup {    
                 border:1px solid #3497db;
                 color: #3497db;
                 border-radius:13px;
                 box-sizing:border-box;
                 background-color:white;
-    //            box-shadow:0 13px 27px 0 #5b63da;
+              box-shadow:0 5px 10px 0 #3497db;
                 max-width:290px;
                 padding:10px;
                 height:65px;
@@ -640,6 +639,18 @@ let botFactory = (function(){
                 color: #FFFFFF;
                 text-align: center;
                 text-decoration: none;
+                margin:6px auto 0px 20px;
+                cursor: pointer;
+                border-radius: 16px;
+                text-transform: uppercase;
+                padding: 5px 28px;
+              }
+
+              .suggestionbuttons {
+                background-color: #3080E2;
+                color: #FFFFFF;
+                text-align: center;
+                text-decoration: none;
 
                 margin: 4px 2px;
                 cursor: pointer;
@@ -647,7 +658,6 @@ let botFactory = (function(){
                 text-transform: uppercase;
                 padding: 5px 20px;
               }
-
               .suggestionbutton, .optionbutton {
                 border: 2px solid #3080E2;
               }
@@ -758,7 +768,9 @@ let botFactory = (function(){
                 padding-left:calc(100% - 245px);
               }
               #oibot_closechat .suggestionbutton {
+                margin: 4px 2px;
                 display: inline-block;
+                padding: 5px 20px;
                 font-size: 15px;
                 opacity: 1;
               }
@@ -782,7 +794,7 @@ let botFactory = (function(){
                 margin-top: -5px;
                 margin-bottom: 0px;
               }
-              .suggestionbutton.viewmore{
+              .suggestionbuttons.viewmore{
                 position:absolute;
                 font-size:13px;
                 right:0px;
@@ -1045,7 +1057,7 @@ let botFactory = (function(){
                   margin-bottom: 0px;
               }
 
-              div.stars {
+              div.stars {                
                 width: 303px;
                 display: inline-block;
                 transition: .1s all ease;
@@ -1249,25 +1261,12 @@ let botFactory = (function(){
                margin-left:22px;
                margin-top:15px;
                 margin-bottom:10px;
-               color:white;
-    //           background-color:#FF7F50;
+               color:white;    
                background-image: linear-gradient(174deg, #AFE78F 0%, #77CB56 100%);
                padding: 5px;
                border-radius: 10px;
              }
-             .ratdiv{
-               content:'';
-               display:inline;
-               border-radius:40%;
-               width:0px;
-               margin-top:-25px;
-               margin-left:3px;
-               padding:6px;
-               height:14px;
-               color:#FF7F50;
-               background-color:#FF7F50;
-             }
-
+             
             `;
 
             /**
@@ -1482,11 +1481,7 @@ let botFactory = (function(){
             let cancelbtn = document.getElementById("oibot_canceldiv");
             cancelbtn.addEventListener("click", function (e) {
                 that.onCancelClick();
-            });
-            // let formbtn = document.getElementById("oibot_chatform");
-            // formbtn.addEventListener("submit", function(e) {
-            //     that.pushChat();
-            // });
+            });           
         }
 
         /**
@@ -1513,7 +1508,6 @@ let botFactory = (function(){
          * The paramters are text,sessionattribute values and a boolean value
          */
         this.sendRequest = function (userRequest, snAttr, callbackFn) {
-            // TODO: send only one request at a time
             let that = this;
             let botruntime = new AWS.LexRuntime();
             let sessionAttributes = this.sessionAttributes;
@@ -1569,7 +1563,8 @@ let botFactory = (function(){
                       /**
                        * Display rating form on chat completion
                        */
-                        that.showRating();
+                      // if(!that.sessionAttributes=="{}")
+                      //   that.showRating();
                     }
                 }
                 if(callbackFn) {
@@ -1587,6 +1582,7 @@ let botFactory = (function(){
             if(userText && this.sessionAttributes.isSecure) {
                 userText = userText.substring(0, userText.length/2) + "X".repeat(userText.length/2);
             }
+            
             let conversationDiv = document.getElementById("oibot_conversation");
             let requestPara = document.createElement("P");
             requestPara.className = "oibot_userrequest";
@@ -1711,7 +1707,8 @@ let botFactory = (function(){
         }
 
         /**
-         * This function displays suggestion buttons when close button is clicked
+         * This function displays suggestion buttons to the user in two scenarios
+         * When chat is initialized and when chat close button is clicked
          * The suggestionList parameter contains sessionattribute value- suggestion
          */
         this.showSuggestions = function (suggestionList) {
@@ -1721,16 +1718,15 @@ let botFactory = (function(){
             responsePara.setAttribute("id", "oibot_suggestions");
             responsePara.className = "botSuggestionResponse";
 
-            for (data in suggestionList) {
+            for (let data in suggestionList) {
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestionList[data];
-                suggestionbtn.className = "suggestionbutton";
-
+                suggestionbtn.className = "suggestionbutton";                         
                 suggestionbtn.addEventListener("click", function () {
-                    let msg = this.innerHTML;
+                    let msg = this.innerHTML;                        
                     document.getElementById("oibot_suggestions") && document.getElementById("oibot_suggestions").remove();
                     that.showRequest(msg);
-                    that.sendRequest(msg);
+                    that.sendRequest(msg);                    
                 });
                 responsePara.appendChild(suggestionbtn);
             }
@@ -1792,7 +1788,7 @@ let botFactory = (function(){
                 let suggestion = suggestionList[idx];
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestion.name;
-                suggestionbtn.className = "suggestionbutton";
+                suggestionbtn.className = "suggestionbuttons";
                 if(suggestion.id) {
                     suggestionbtn.setAttribute("value", suggestion.id);
                 }
@@ -2017,6 +2013,9 @@ let botFactory = (function(){
                     let suggestions = JSON.parse(sessionAttributes.suggestions);
                     this.showSuggestions(suggestions);
                 }
+                else if(sessionAttributes.showRating){
+                    this.showRating();
+                }
             }
         }
 
@@ -2046,7 +2045,7 @@ let botFactory = (function(){
 
                 let messages=
                   {
-                    "suggestions":["Yes","No"]
+                    "suggestions":["Yes","Maybe later"]
                   }
                 let sn = {};
                 messages.messages = JSON.stringify(this.initialChatScript);
@@ -2133,7 +2132,8 @@ let botFactory = (function(){
         }
 
         /**
-         * This function closes the chat window
+         * This function is called when chat close button is clicked
+         * It closes the chat window
          * Deletes the chat history and localstorage values
          */
         this.onOkClick = function () {
@@ -2222,9 +2222,9 @@ let botFactory = (function(){
                     span.setAttribute("variationid", firstSlide.variation_id);
                 }
 
-                let view=document.createElement("span");
+                let view=document.createElement("button");
                 view.id="newview";
-                view.className="suggestionbutton viewmore";
+                view.className="suggestionbuttons viewmore";
                 /**
                  * To display multiple slides
                  */
@@ -2256,6 +2256,8 @@ let botFactory = (function(){
                 slide.appendChild(prrat);
 
                 slide.addEventListener("click", function() {
+
+                    document.getElementById("newview").disabled="true";
                     if(this.parentNode.classList.contains("product")) {
                         return false;
                     }
@@ -2450,6 +2452,7 @@ let botFactory = (function(){
             else {
                 curSlideParent.scrollLeft = 0;
             }
+           
         }
 
         /**
@@ -2459,6 +2462,7 @@ let botFactory = (function(){
         this.showRating = function(){
             let conversationDiv = document.getElementById("oibot_conversation");
             let div=document.createElement("div");
+            div.id="stardiv";
             div.className="stars";
             let form=document.createElement("form");
             let n=5;
