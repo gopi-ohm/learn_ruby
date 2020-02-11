@@ -23,9 +23,7 @@ let botFactory = (function(){
                             <br/>
                             <span>
                               <span class="powered_by">POWERED BY</span>
-                              <span>
-                                <a id="xsell" href="https://xselltechnologies.com" target="_blank">XSELL Technologies</a>
-                              </span>
+                              <span class="anc" onclick="window.open('https://xselltechnologies.com', '_blank')"> XSELL Technologies</span>
                             </span>
                           </span>
 
@@ -133,6 +131,7 @@ let botFactory = (function(){
                 margin-left: auto;
                 background-color: #141414;
                 color: #FFFFFF;
+                word-break: break-word;
               }
               .dark-mode .oibot_userrequest {
                 background-color: #FFFFFF;
@@ -258,6 +257,7 @@ let botFactory = (function(){
                 max-width: 85%;
                 background-color: #F0F0F0;
                 color: #000000;
+                word-break: break-word;
               }
               .dark-mode .oibot_botresponse {
                 background-color: #a0a0a0;
@@ -336,6 +336,8 @@ let botFactory = (function(){
                 margin-right:15px;
               }
               .headertitle {
+                list-style:none;
+                display:list-item;
                 width:calc(100% - 60px);
                 cursor:pointer;
                 font-size:19px;
@@ -351,7 +353,8 @@ let botFactory = (function(){
                 opacity: 0.8;
                 font-size:10px;
               }
-              .headertitle a {
+              .headertitle .anc {
+                margin-left: 2px;
                 text-decoration:none;
                 color:#FFFFFF;
                 font-size:11px;
@@ -481,7 +484,7 @@ let botFactory = (function(){
                 display:-webkit-box;
                 display:-webkit-flex;
                 display:-ms-flexbox;
-                display:flex
+                display:inline-flex;
               }
               #oibot_smallchat .messenger_header {
                 -webkit-box-align:center;
@@ -505,7 +508,7 @@ let botFactory = (function(){
                 -webkit-animation:slidein .15s .3s;
                 animation:slidein .15s .3s;
                 -webkit-animation-fill-mode:forwards;
-                animation-fill-mode:forwards
+                animation-fill-mode:forwards;
               }
 
               #oibot_smallchat .messenger_prompt {
@@ -515,7 +518,7 @@ let botFactory = (function(){
                 font-weight:400;
                 overflow:hidden;
                 white-space:nowrap;
-                text-overflow:ellipsis
+                text-overflow:ellipsis;
               }
 
               @-webkit-keyframes slidein {
@@ -639,23 +642,17 @@ let botFactory = (function(){
                 color: #FFFFFF;
                 text-align: center;
                 text-decoration: none;
-                margin:6px auto 0px 20px;
+                margin:6px -13px;
+                margin-left:5%;
                 cursor: pointer;
                 border-radius: 16px;
                 text-transform: uppercase;
-                padding: 5px 28px;
+                padding: 5px 30px;
               }
 
-              .suggestionbuttons {
-                background-color: #3080E2;
-                color: #FFFFFF;
-                text-align: center;
-                text-decoration: none;
-
+              .objectbutton {
                 margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 16px;
-                text-transform: uppercase;
+                margin-left: 0;
                 padding: 5px 20px;
               }
               .suggestionbutton, .optionbutton {
@@ -794,7 +791,7 @@ let botFactory = (function(){
                 margin-top: -5px;
                 margin-bottom: 0px;
               }
-              .suggestionbuttons.viewmore{
+              .objectbutton.viewmore{
                 position:absolute;
                 font-size:13px;
                 right:0px;
@@ -1129,11 +1126,14 @@ let botFactory = (function(){
                 .headertitle{
                   font-size:13px;
                 }
+                #oibot_popup{
+                  max-width:255px;
+                }
                 .headertitle .welcome {
-                  margin-left: 40%;
+                  margin-left: 37%;
                 }
                 .headertitle > span:last-child {
-                  margin-left: 23%;
+                  margin-left: 18%;
                   display: inline;
                 }
                 #oibot_smallchat .messenger_header {
@@ -1407,21 +1407,21 @@ let botFactory = (function(){
                 };
             }
 
-            let starLabels = document.querySelectorAll("label.star");
-            if(starLabels && starLabels.length) {
+            let starsAvail = document.getElementsByClassName("stars").length-1;
+            let starLabels = document.querySelectorAll("label.star:not([disabled])");
+            if(starLabels && starLabels.length && starsAvail > -1) {
                 for(let sIdx=0; sIdx<starLabels.length; sIdx++) {
                     starLabels[sIdx].addEventListener("click", function() {
-                        if(!this.classList.contains("disabled")) {
-                            document.getElementById("ng").style.display="none";
-                            document.getElementById("greet").style.display="block";
-                            let stars = document.querySelectorAll('.stars label.star');
-                            for (let sIdx = 0; sIdx < stars.length; sIdx++) {
-                                stars[sIdx].setAttribute("disabled", "");
-                                stars[sIdx].classList.add('disabled');
-                            }
-                            stars = document.querySelectorAll('.stars input.star');
-                            for (let sIdx = 0; sIdx < stars.length; sIdx++) {
-                                stars[sIdx].classList.add('disabled');
+                        if(!this.getAttribute("disabled")) {
+                            document.getElementsByClassName("ng-"+starsAvail)[0].style.display="none";
+                            document.getElementsByClassName("greet-"+starsAvail)[0].style.display="block";
+                            let form = document.getElementById("starform-"+starsAvail);
+                            form.style.pointerEvents="none";
+                            let starLabels1 = document.querySelectorAll("label.star:not([disabled])");
+                            if(starLabels1 && starLabels1.length) {
+                                for(let sIdx1=0; sIdx1<starLabels1.length; sIdx1++) {
+                                    starLabels1[sIdx1].setAttribute('disabled', '');
+                                }
                             }
                         }
                     })
@@ -1675,7 +1675,7 @@ let botFactory = (function(){
           /**
            * This method assigns attributes to the corresponding buttons
            */
-            for (bIdx in buttons) {
+            for (let bIdx in buttons) {
                 let button = document.createElement("span");
                 let data = buttons[bIdx];
                 button.innerHTML = data.name;
@@ -1721,7 +1721,7 @@ let botFactory = (function(){
             for (let data in suggestionList) {
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestionList[data];
-                suggestionbtn.className = "suggestionbutton";                         
+                suggestionbtn.className = "suggestionbutton";
                 suggestionbtn.addEventListener("click", function () {
                     let msg = this.innerHTML;                        
                     document.getElementById("oibot_suggestions") && document.getElementById("oibot_suggestions").remove();
@@ -1784,11 +1784,11 @@ let botFactory = (function(){
             /**
              * This method assigns different attributes for the buttons available
              */
-            for (idx in suggestionList) {
+            for (let idx in suggestionList) {
                 let suggestion = suggestionList[idx];
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestion.name;
-                suggestionbtn.className = "suggestionbuttons";
+                suggestionbtn.className = "suggestionbutton objectbutton";
                 if(suggestion.id) {
                     suggestionbtn.setAttribute("value", suggestion.id);
                 }
@@ -1963,6 +1963,10 @@ let botFactory = (function(){
             let that = this;
             document.getElementById("oibot_typingindicator") && document.getElementById("oibot_typingindicator").remove();
             document.getElementById("oibot_suggestions") && document.getElementById("oibot_suggestions").remove();
+            let viewMore = document.getElementsByClassName("viewmore");
+            if(viewMore.length) {
+                viewMore[viewMore.length-1].disabled="true";
+            }
             let messages = null;
             let skipIcon = false;
             if (botResponse && botResponse.sessionAttributes) {
@@ -2013,7 +2017,8 @@ let botFactory = (function(){
                     let suggestions = JSON.parse(sessionAttributes.suggestions);
                     this.showSuggestions(suggestions);
                 }
-                else if(sessionAttributes.showRating){
+                
+                if(sessionAttributes.showRating){
                     this.showRating();
                 }
             }
@@ -2223,8 +2228,7 @@ let botFactory = (function(){
                 }
 
                 let view=document.createElement("button");
-                view.id="newview";
-                view.className="suggestionbuttons viewmore";
+                view.className="suggestionbutton viewmore objectbutton";
                 /**
                  * To display multiple slides
                  */
@@ -2256,8 +2260,6 @@ let botFactory = (function(){
                 slide.appendChild(prrat);
 
                 slide.addEventListener("click", function() {
-
-                    document.getElementById("newview").disabled="true";
                     if(this.parentNode.classList.contains("product")) {
                         return false;
                     }
@@ -2287,7 +2289,7 @@ let botFactory = (function(){
             /**
              * To display a carousel of slides
              */
-            for (idx in slidelist) {
+            for (let idx in slidelist) {
                 let slide = document.createElement("span");
                 slide.setAttribute("slide", idx);
                 slide.className = "carousel fadeSlide";
@@ -2460,11 +2462,13 @@ let botFactory = (function(){
          * A greeting text is displayed once the user rates the chat experience
          */
         this.showRating = function(){
+            let starsAvail = document.getElementsByClassName("stars").length;
             let conversationDiv = document.getElementById("oibot_conversation");
             let div=document.createElement("div");
             div.id="stardiv";
             div.className="stars";
             let form=document.createElement("form");
+            form.id="starform-"+starsAvail;
             let n=5;
             let a=[];
             let b=[];
@@ -2472,18 +2476,26 @@ let botFactory = (function(){
                 a[i]=document.createElement("input");
                 a[i].name="rate";
                 a[i].type="radio";
-                a[i].id="star-"+n;
-                a[i].className="star star-"+n;
+                a[i].id="star-"+starsAvail+"-"+n;
+                a[i].className="star star-"+starsAvail+"-"+n;
                 form.appendChild(a[i]);
 
                 b[i]=document.createElement("label");
-                b[i].htmlFor="star-"+n;
-                b[i].className="star star-"+n;
+                b[i].htmlFor="star-"+starsAvail+"-"+n;
+                b[i].className="star star-"+starsAvail+"-"+n;
                 b[i].addEventListener("click", function(){
-                    if(!this.classList.contains("disabled")) {
-                        document.getElementById("ng").style.display="none";
-                        document.getElementById("greet").style.display="block";
-                        form.style.pointerEvents="none";
+                    if(!this.getAttribute("disabled")) {
+                        let starsAvail = document.getElementsByClassName("stars").length;
+                        starsAvail--;
+                        document.getElementsByClassName("ng-"+starsAvail)[0].style.display="none";
+                        document.getElementsByClassName("greet-"+starsAvail)[0].style.display="block";
+                        form.style.pointerEvents = "none";
+                        let starLabels1 = document.querySelectorAll("label.star:not([disabled])");
+                        if(starLabels1 && starLabels1.length) {
+                            for(let sIdx1=0; sIdx1<starLabels1.length; sIdx1++) {
+                                starLabels1[sIdx1].setAttribute('disabled', '');
+                            }
+                        }
                     }
                 });
                 form.appendChild(b[i]);
@@ -2491,14 +2503,13 @@ let botFactory = (function(){
 
             let html = document.createTextNode("How do you rate this chat experience?");
             let p=document.createElement("p");
-            p.className="hail"; p.id="ng";
+            p.className="hail ng-"+starsAvail;
             p.appendChild(html);
 
             let html2=document.createTextNode("Thank you, your feedback is noted. Have a good day.");
             let p2=document.createElement("p");
             p2.style.fontSize="14px";
-            p2.id="greet";
-            p2.className="hail";
+            p2.className="hail greet-"+starsAvail;
             p2.appendChild(html2);
             p2.style.display="none";
 
@@ -2507,12 +2518,6 @@ let botFactory = (function(){
             div.appendChild(p2);
             conversationDiv.appendChild(div);
             conversationDiv.scrollTop = conversationDiv.scrollHeight;
-            var x=document.getElementsByClassName('stars')[0];
-            x.addEventListener("click",function(){
-                document.getElementById("ng").style.display="none";
-                document.getElementById("greet").style.display="block";
-                form.style.pointerEvents="none";
-            });
         }
 
         /**
