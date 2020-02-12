@@ -1520,6 +1520,7 @@ let botFactory = (function(){
             }
             delete sessionAttributes.curProductId;
             delete sessionAttributes.isProduct;
+            sessionAttributes.agent = navigator.userAgent;
 
             /**
              * Lex bot connectivity
@@ -1557,14 +1558,9 @@ let botFactory = (function(){
                         delete data.sessionAttributes.suggestionsObj;
                         delete data.sessionAttributes.suggestions;
                     }
-                    that.sessionAttributes = data.sessionAttributes;
-                    that.showResponse(data);
-                    if(data.dialogState=="Fulfilled"){
-                      /**
-                       * Display rating form on chat completion
-                       */
-                      // if(!that.sessionAttributes=="{}")
-                      //   that.showRating();
+                    if(!data.sessionAttributes.skipResponse){
+                        that.sessionAttributes = data.sessionAttributes;
+                        that.showResponse(data);
                     }
                 }
                 if(callbackFn) {
@@ -2462,6 +2458,7 @@ let botFactory = (function(){
          * A greeting text is displayed once the user rates the chat experience
          */
         this.showRating = function(){
+            let that=this;
             let starsAvail = document.getElementsByClassName("stars").length;
             let conversationDiv = document.getElementById("oibot_conversation");
             let div=document.createElement("div");
@@ -2478,6 +2475,11 @@ let botFactory = (function(){
                 a[i].type="radio";
                 a[i].id="star-"+starsAvail+"-"+n;
                 a[i].className="star star-"+starsAvail+"-"+n;
+                a[i].addEventListener("change", function(){
+                  if(!this.getAttribute("disabled")) {
+                    that.sendRating(this.id.split("-")[2]);
+                  }
+                });
                 form.appendChild(a[i]);
 
                 b[i]=document.createElement("label");
@@ -2518,6 +2520,18 @@ let botFactory = (function(){
             div.appendChild(p2);
             conversationDiv.appendChild(div);
             conversationDiv.scrollTop = conversationDiv.scrollHeight;
+        }
+
+        /**
+         * This function is used to send the rating given by user
+         * as hidden request
+         */
+        this.sendRating=function(rating){
+            let that=this;
+            let snAttr = that.sessionAttributes;
+            snAttr.israted=rating;
+            let msg="Rating is stored";
+            that.sendRequest(msg, snAttr);
         }
 
         /**
