@@ -1388,6 +1388,20 @@ let botFactory = (function(){
             let closediv = document.getElementById("oibot_closechat");
             closediv.style.display = "none";
 
+            let that=this;
+            let count= sessionStorage.getItem("pagevisit");
+             if(count == null){
+              count=0;
+             }
+             
+             let pagelink=location.href;
+             if(pagelink.includes("mattresses")){
+              count++;
+               if(count==4)
+               that.onChatClick();
+             }                  
+             sessionStorage.setItem("pagevisit",count);
+
             let slides = document.getElementsByClassName("botSlides");
             if(slides && slides.length) {
                 for(let eIdx=0; eIdx<slides.length; eIdx++) {
@@ -2027,7 +2041,7 @@ let botFactory = (function(){
         this.removeStorage = function() {
             window.localStorage.removeItem("history");
             window.localStorage.removeItem("isFromStorage");
-            window.localStorage.removeItem("session");
+            window.localStorage.removeItem("session");            
         }
 
         /**
