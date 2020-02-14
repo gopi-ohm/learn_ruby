@@ -1395,7 +1395,7 @@ let botFactory = (function(){
              }
              
              let pagelink=location.href;
-             if(pagelink.includes("mattresses")){
+             if(pagelink.includes("mattress")){
               count++;
                if(count==4)
                that.onChatClick();
