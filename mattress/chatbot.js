@@ -1557,7 +1557,10 @@ let botFactory = (function(){
                 }
 
                 if (err) {
-                    that.showError("Error:  Please try again");
+                  if(err.statusCode)
+                  that.showError("Error:  Please try again");
+                  else
+                  that.showError("No internet connection please check your connectivity");
                     document.getElementById("oibot_typingindicator") && document.getElementById("oibot_typingindicator").remove();
                     if(callbackFn) {
                         callbackFn(false);
