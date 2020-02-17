@@ -1707,6 +1707,9 @@ let botFactory = (function(){
                         if (this.getAttribute("value")) {
                             snAttr.id = this.getAttribute("value");
                         }
+                        let userText = document.getElementById("oibot_userinput");
+                        userText.value = "...";
+                        userText.disabled = true;
                         that.showRequest(msg);
                         that.sendRequest(msg, snAttr);
 
