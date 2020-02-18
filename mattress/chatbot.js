@@ -23,7 +23,7 @@ let botFactory = (function(){
                             <br/>
                             <span>
                               <span class="powered_by">POWERED BY</span>
-                              <span class="anc" onclick="window.open('https://xselltechnologies.com', '_blank')"> XSELL Technologies</span>
+                              <span class="anc" onclick="window.open('https://xselltechnologies.com', '_blank');event.stopPropagation();"> XSELL Technologies</span>
                             </span>
                           </span>
 
@@ -37,11 +37,11 @@ let botFactory = (function(){
                           </div>
 
                           <div id="oibot_light" class="chat_minimize_icon oibot_icon tooltip">
-                            <img src="`+this.assetsUrl+`iconfinder_moon_dark_mode_night_5402400.png" width="14px">
+                            <img src="`+this.assetsUrl+`darkmode.png" width="14px">
                             <!--<span class="tooltiptext">Toggle Dark Mode</span>-->
                           </div>
                           <div id="oibot_closeicon" class="chat_close_icon oibot_icon">
-                           <img src="`+this.assetsUrl+`close+(11)+copy-min.png" width="10px">
+                           <img src="`+this.assetsUrl+`close.png" width="10px">
                           </div>
                         </div>
                         <div id="oibot_messenger_content" class="messenger_content">
@@ -68,7 +68,7 @@ let botFactory = (function(){
                               <div class="container_push">
                                 <button id="oibot_pushchat" class="Input_button Input_button-send">
                                   <div class="oibot_icon">
-                                   <img src="`+this.assetsUrl+`right-arrow+(11)-min.png" class="sendbutton" width="18px">
+                                   <img src="`+this.assetsUrl+`send.png" class="sendbutton" width="18px">
                                 </button>
                               </div>
                             </div>
@@ -1083,7 +1083,7 @@ let botFactory = (function(){
 
               input.star:checked ~ label.star:before {
                 transition: all .25s;
-                background-image: url('`+this.assetsUrl+`Path+Copy+9-min.png');
+                background-image: url('`+this.assetsUrl+`star-gold.png');
                 background-size: 40px 40px;
                 display: inline-block;
                 width: 40px;
@@ -1104,7 +1104,7 @@ let botFactory = (function(){
 
               label.star:before {
                 transition: all .25s;
-                background-image: url('`+this.assetsUrl+`Path+Copy+10-min.png');
+                background-image: url('`+this.assetsUrl+`star-white.png');
                 background-size: 40px 40px;
                 display: inline-block;
                 width: 40px;
@@ -1523,7 +1523,21 @@ let botFactory = (function(){
          */
         this.sendRequest = function (userRequest, snAttr, callbackFn) {
             let that = this;
-            let botruntime = new AWS.LexRuntime();
+            let botruntime = null;
+            try {
+                botruntime = new AWS.LexRuntime();
+            }
+            catch(e) {
+                let userText = document.getElementById("oibot_userinput");
+                userText.value = "";
+                userText.disabled = false;
+                let btns = document.getElementsByClassName("optionbutton");
+                for (let idx = 0; idx < btns.length; idx++) {
+                    btns[idx].setAttribute("done", "true");
+                    btns[idx].setAttribute("disabled", "");
+                }
+                that.showError("No internet connection please check your connectivity");
+            }
             let sessionAttributes = this.sessionAttributes;
             if (snAttr) {
                 sessionAttributes = snAttr;
@@ -1557,11 +1571,10 @@ let botFactory = (function(){
                 }
 
                 if (err) {
-                  if(err.statusCode)
-                  that.showError("Error:  Please try again");
-                  else
-                  that.showError("No internet connection please check your connectivity");
-                    document.getElementById("oibot_typingindicator") && document.getElementById("oibot_typingindicator").remove();
+                    if(err.statusCode)
+                        that.showError("Error:  Please try again");
+                    else
+                        that.showError("No internet connection please check your connectivity");
                     if(callbackFn) {
                         callbackFn(false);
                     }
@@ -1628,6 +1641,7 @@ let botFactory = (function(){
             errorPara.appendChild(document.createTextNode(userText));
             conversationDiv.appendChild(errorPara);
             conversationDiv.scrollTop = conversationDiv.scrollHeight;
+            document.getElementById("oibot_typingindicator") && document.getElementById("oibot_typingindicator").remove();
         }
 
         /**
@@ -1769,7 +1783,7 @@ let botFactory = (function(){
             pi.id="p1";
             let piArrow = document.createElement("img");
             piArrow.style.width="20px";
-            piArrow.src = this.assetsUrl+"Group+5+Copy+2-min.png";
+            piArrow.src = this.assetsUrl+"suggestion-left.png";
             pi.appendChild(piArrow);
             let ni = document.createElement("span");
             ni.className = "roundedNav1 next1";
@@ -1777,7 +1791,7 @@ let botFactory = (function(){
 
             let niArrow = document.createElement("img");
             niArrow.style.width="20px";
-            niArrow.src = this.assetsUrl+"Group+5+Copy+3-min.png";
+            niArrow.src = this.assetsUrl+"suggestion-right.png";
 
             ni.appendChild(niArrow);
 
@@ -2397,13 +2411,13 @@ let botFactory = (function(){
                 let pi = document.createElement("span");
                 pi.className = "roundedNav prev";
                 let piArrow = document.createElement("img");
-                piArrow.src = this.assetsUrl+"Path+Copy-min.png";
+                piArrow.src = this.assetsUrl+"slider-left.png";
                 piArrow.style.width="10px";
                 pi.appendChild(piArrow);
                 let ni = document.createElement("span");
                 ni.className = "roundedNav next";
                 let niArrow = document.createElement("img");
-                niArrow.src = this.assetsUrl+"Path+Copy-min-1.png";
+                niArrow.src = this.assetsUrl+"slider-right.png";
                 niArrow.style.width="10px";
                 ni.appendChild(niArrow);
 
