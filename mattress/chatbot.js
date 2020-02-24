@@ -6,7 +6,7 @@ let botFactory = (function(){
         this.sessionAttributes = {};
         this.slideIndex = [];
         this.slideDivId = "oibot_slides_";
-        this.initialChatScript = [{"isbefore":true,"text":"Hi, I'm MattressBot! I'm here to help you find the perfect mattress so you can get a great night's" + String.fromCodePoint("0x1F634") },
+        this.initialChatScript = [{"isbefore":true,"text":"Welcome to Gates. Can I help you find your perfect mattress? " },
         {"isbefore":false,"text":"Are you ready to find your mattress?" }];
         this.assetsUrl = "https://smartbotgates.s3.amazonaws.com/assets/";
 
@@ -79,8 +79,8 @@ let botFactory = (function(){
                   </div>
                   <div id="oibot_popup">
                         <!-- <div class="chathead" style="background-image: url('`+this.assetsUrl+`avatar.jpeg');"></div>-->
-                        <div class="chathead" style="background-image: url('`+this.assetsUrl+`chatbot.png');"></div>
-                        <span class="text">Hi I'm MattressBot, have a question? I can help you, text me here!</span>
+                        <div class="chathead" style="background-image: url(https://mattressassets.s3.amazonaws.com/assets1/gateslogo.jpeg);"></div>
+                        <span class="text">Welcome to Gates. Can I help you find your perfect mattress? </span>
                       </div>
                   </div>
                   <div id="oibot_chaton" class="chat_on">
@@ -169,7 +169,7 @@ let botFactory = (function(){
                 border-radius: 45px;
                 width: 45px;
                 height: 45px;
-                display: inline-block;
+                // display: inline-block;
               }
               #oibot_popup {
                 align-items: flex-end;
@@ -212,7 +212,8 @@ let botFactory = (function(){
               }
               #oibot_popup span.text {
                 width: calc(100% - 70px);
-                margin-left: 15px;
+                margin-left: 20%;
+                margin-top: -14%;
               }
 
               #oibot_maindiv {
@@ -1129,6 +1130,11 @@ let botFactory = (function(){
                 #oibot_popup{
                   max-width:255px;
                 }
+                #oibot_popup span.text {
+                  width: calc(100% - 70px);
+                  margin-left: 20%;
+                  margin-top: -17%;
+                }
                 .headertitle .welcome {
                   margin-left: 37%;
                 }
@@ -1254,7 +1260,7 @@ let botFactory = (function(){
               }
 
              .rating{
-               width:200px;
+               width:68%;
                display:inline;
                font-weight:bold;
                font-size:12px;
@@ -1342,7 +1348,7 @@ let botFactory = (function(){
                         document.getElementById("oibot_chaton").click();
                         let conversationDiv = document.getElementById("oibot_conversation");
 
-                        let sbtn = document.getElementsByClassName('suggestionbutton');
+                        let sbtn = document.getElementsByClassName('optionbutton');
                         for(let sIdx=0; sIdx<sbtn.length; sIdx++) {
                             sbtn[sIdx].addEventListener("click",function(){
                                 if(!this.classList.contains("close")) {
@@ -1767,7 +1773,7 @@ let botFactory = (function(){
         /**
          * This function displays suggestion buttons within the chat
          * The suggestionList parameter contains sessionattribute value- suggestionsobj
-         * Some example values are Pay now,See more details..
+         * Some example values are Pay now,See more mattress details..
          */
         this.showSuggestionsObj = function (suggestionList) {
             let that = this;
@@ -1775,7 +1781,7 @@ let botFactory = (function(){
 
             let responsePara = document.createElement("P");
             responsePara.setAttribute("id", "oibot_suggestions");
-            responsePara.className = "botSuggestionResponse";
+            responsePara.className = "botOptionResponse";
 
 
             let pi = document.createElement("span");
@@ -1796,10 +1802,10 @@ let botFactory = (function(){
             ni.appendChild(niArrow);
 
             let ns=document.createElement("span");
-            ns.className="suggestionrow";
+            ns.className="botSuggestionResponse";
             ns.id="oibot_suggrow";
-            responsePara.appendChild(pi);
-            responsePara.appendChild(ni);
+            // responsePara.appendChild(pi);
+            // responsePara.appendChild(ni);
             window.onscroll = function () { window.scrollTo(0, 0); };
 
             /**
@@ -1818,7 +1824,7 @@ let botFactory = (function(){
                 let suggestion = suggestionList[idx];
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestion.name;
-                suggestionbtn.className = "suggestionbutton objectbutton";
+                suggestionbtn.className = "objectbutton";
                 if(suggestion.id) {
                     suggestionbtn.setAttribute("value", suggestion.id);
                 }
@@ -1967,7 +1973,7 @@ let botFactory = (function(){
                     window.localStorage.setItem("isFromStorage", that.botUserId);
                     window.localStorage.setItem("session", encodedSession);
 
-                    if(msg == "See more details") {
+                    if(msg == "See More Mattress Details") {
                       /**
                        * Opens link in same tab
                        */
@@ -2218,7 +2224,7 @@ let botFactory = (function(){
             let trating=document.createElement("p");
             trating.id="tr";
             trating.className="rating";
-            let ax=document.createTextNode("Expert Rating From Goodbed.com");
+            let ax=document.createTextNode("Sleep Expert Rating From Goodbed.com");
             trating.appendChild(ax);
             if(slidelist.length) {
                 conversationDiv.appendChild(trating);
