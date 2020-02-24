@@ -79,7 +79,7 @@ let botFactory = (function(){
                   </div>
                   <div id="oibot_popup">
                         <!-- <div class="chathead" style="background-image: url('`+this.assetsUrl+`avatar.jpeg');"></div>-->
-                        <div class="chathead" style="background-image: url(https://mattressassets.s3.amazonaws.com/assets1/gateslogo.jpeg);"></div>
+                        <div class="chathead" style="background-image: url('`+this.assetsUrl+`gateslogo.jpeg');"></div>
                         <span class="text">Welcome to Gates. Can I help you find your perfect mattress? </span>
                       </div>
                   </div>
