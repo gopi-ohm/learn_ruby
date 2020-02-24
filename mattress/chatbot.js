@@ -8,7 +8,7 @@ let botFactory = (function(){
         this.slideDivId = "oibot_slides_";
         this.initialChatScript = [{"isbefore":true,"text":"Welcome to Gates. Can I help you find your perfect mattress? " },
         {"isbefore":false,"text":"Are you ready to find your mattress?" }];
-        this.assetsUrl = "https://smartbotgates.s3.amazonaws.com/assets/";
+        this.assetsUrl = "https://mattressassets.s3.amazonaws.com/assets/";
 
         this.chatHTML = `
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
