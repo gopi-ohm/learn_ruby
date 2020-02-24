@@ -79,7 +79,7 @@ let botFactory = (function(){
                   </div>
                   <div id="oibot_popup">
                         <!-- <div class="chathead" style="background-image: url('`+this.assetsUrl+`avatar.jpeg');"></div>-->
-                        <div class="chathead" style="background-image: url(https://mattressassets.s3.amazonaws.com/assets1/gateslogo.jpeg);"></div>
+                        <div class="chathead" style="background-image: url('`+this.assetsUrl+`gateslogo.jpeg');"></div>
                         <span class="text">Welcome to Gates. Can I help you find your perfect mattress? </span>
                       </div>
                   </div>
@@ -919,15 +919,12 @@ let botFactory = (function(){
               }
               .carousel1 .circularchart{
                 position:absolute;
-                left:32%;
-              }
-              .carousel1.active {
-                opacity: 1.0;
-              }
-              .carousel1 .circularchart{
                 left:30%;
                 text-align:center;
               }
+              .carousel1.active {
+                opacity: 1.0;
+              }             
               .carousel1 img {
                 height: 88%;
                 border-radius: 10px;
@@ -1046,7 +1043,7 @@ let botFactory = (function(){
               }
               .mySlides.product .circularchart {
                 top:-1px;
-                left:55px;
+                left:45px;
                 text-align:center;
               }
               .mySlides.product .botslidesnav{
@@ -1153,9 +1150,13 @@ let botFactory = (function(){
                   min-width: 100%;
                   overflow: hidden;
                 }
+                .carousel1 .circularchart{
+                  position:absolute;
+                  left:28%;
+                }
                 .mySlides.product .circularchart {
                   top:0px;
-                  left:17%;
+                  left:12%;
                 }
                 .tooltip:hover .tooltiptext {
                   visibility: hidden;
@@ -1195,9 +1196,13 @@ let botFactory = (function(){
 
                   overflow: hidden;
                 }
+                .carousel1 .circularchart{
+                  position:absolute;
+                  left:30%;
+                }
                 .mySlides.product .circularchart {
                   top:0px;
-                  left:20%;
+                  left:17%;
                 }
                 .tooltip:hover .tooltiptext {
                   visibility: hidden;
@@ -1243,6 +1248,10 @@ let botFactory = (function(){
 
                   font-size: 20px;
 
+                }
+                .carousel1 .circularchart{
+                  position:absolute;
+                  left:34%;
                 }
                 .mySlides.product .circularchart {
                   top:0px;
@@ -1784,22 +1793,22 @@ let botFactory = (function(){
             responsePara.className = "botOptionResponse";
 
 
-            let pi = document.createElement("span");
-            pi.className = "roundedNav1 prev1";
-            pi.id="p1";
-            let piArrow = document.createElement("img");
-            piArrow.style.width="20px";
-            piArrow.src = this.assetsUrl+"suggestion-left.png";
-            pi.appendChild(piArrow);
-            let ni = document.createElement("span");
-            ni.className = "roundedNav1 next1";
-            ni.id="n1";
+            // let pi = document.createElement("span");
+            // pi.className = "roundedNav1 prev1";
+            // pi.id="p1";
+            // let piArrow = document.createElement("img");
+            // piArrow.style.width="20px";
+            // piArrow.src = this.assetsUrl+"suggestion-left.png";
+            // pi.appendChild(piArrow);
+            // let ni = document.createElement("span");
+            // ni.className = "roundedNav1 next1";
+            // ni.id="n1";
 
-            let niArrow = document.createElement("img");
-            niArrow.style.width="20px";
-            niArrow.src = this.assetsUrl+"suggestion-right.png";
+            // let niArrow = document.createElement("img");
+            // niArrow.style.width="20px";
+            // niArrow.src = this.assetsUrl+"suggestion-right.png";
 
-            ni.appendChild(niArrow);
+            // ni.appendChild(niArrow);
 
             let ns=document.createElement("span");
             ns.className="botSuggestionResponse";
@@ -1811,12 +1820,12 @@ let botFactory = (function(){
             /**
              *  This method assings Scroll action for scroll buttons present in the chat
              */
-            pi.addEventListener("click",function(){
-                document.getElementById("oibot_suggrow").scrollBy(-300,0);
-            });
-            ni.addEventListener("click",function(){
-                document.getElementById("oibot_suggrow").scrollBy(300,0);
-            });
+            // pi.addEventListener("click",function(){
+            //     document.getElementById("oibot_suggrow").scrollBy(-300,0);
+            // });
+            // ni.addEventListener("click",function(){
+            //     document.getElementById("oibot_suggrow").scrollBy(300,0);
+            // });
             /**
              * This method assigns different attributes for the buttons available
              */
@@ -2036,6 +2045,10 @@ let botFactory = (function(){
                             }
                         });
                     }
+                }
+                if(sessionAttributes.slideObj){
+                  let slideObj = JSON.parse(sessionAttributes.slideObj);
+                  this.showproduct(slideObj);
                 }
                 if(sessionAttributes.slides) {
                     let slides = JSON.parse(sessionAttributes.slides);
@@ -2454,6 +2467,84 @@ let botFactory = (function(){
 
 
             conversationDiv.scrollTop = conversationDiv.scrollHeight;
+        }
+
+        /**
+         * This function perfroms the same process as the previous one
+         * Except it's called when the no.of products length is 1
+         */
+        this.showproduct = function(product){
+          let that = this;
+          this.slideIndex.push(1);
+          let curIdx = document.getElementsByClassName("botSlides").length;
+          let conversationDiv = document.getElementById("oibot_conversation");
+          let trating=document.createElement("p");        
+          trating.className="rating";
+          let ax=document.createTextNode("Sleep Expert Rating From Goodbed.com");
+          trating.appendChild(ax);
+          if(product.length) {
+              conversationDiv.appendChild(trating);
+          }
+  
+          let responsePara = document.createElement("P");
+          responsePara.setAttribute("id", this.slideDivId+curIdx);
+          responsePara.className = "botSlides mySlides fadeSlide";
+          let firstSlideDiv = document.createElement("span");
+              let firstSlide = product;
+              firstSlideDiv.id = "single_"+curIdx;              
+              let slide = document.createElement("span");
+              slide.className = "carousel1 active";
+              
+              let img = document.createElement("img");
+              img.src = firstSlide.images;
+              
+              let innerHTML = firstSlide.name;
+              let span = document.createElement("span");
+              span.innerHTML = innerHTML;
+              span.className = "title";
+              if(firstSlide.id) {
+                  span.setAttribute("value", firstSlide.id);
+              }
+              if(firstSlide.permalink) {
+                  span.setAttribute("url", firstSlide.permalink);
+              }
+              if(firstSlide.variation_id) {
+                  span.setAttribute("variationid", firstSlide.variation_id);
+              }
+              let prrat=document.createElement("span");
+              prrat.className="circularchart";
+              let html=document.createTextNode(firstSlide.rating+"%");
+              prrat.appendChild(html);
+              slide.appendChild(img);
+              slide.appendChild(span);
+              slide.appendChild(prrat);
+  
+              slide.addEventListener("click", function() {
+                  if(this.parentNode.classList.contains("product")) {
+                      return false;
+                  }
+                  if(!this.classList.contains("active")) {
+                      that.showSlides(parseInt(this.getAttribute("slide"))+1, curIdx);
+                  }
+                  let product = this.childNodes[1];
+                  let msg = product.innerHTML.split("<")[0];
+                  let snAttr = that.sessionAttributes;
+                  if (product.getAttribute("value")) {
+                      snAttr.id = product.getAttribute("value");
+                      snAttr.productName = msg;
+                  }
+                  if(product.getAttribute("variationid")) {
+                      snAttr.variationId = product.getAttribute("variationid");
+                  }
+                  document.getElementById(that.slideDivId+curIdx).classList.add("disabled");
+                  that.showRequest(msg);
+                  that.sendRequest(msg, snAttr);
+              });
+  
+              firstSlideDiv.appendChild(slide);            
+              responsePara.appendChild(firstSlideDiv);
+              conversationDiv.appendChild(responsePara);
+              conversationDiv.scrollTop = conversationDiv.scrollHeight;
         }
 
         /**
