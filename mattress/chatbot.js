@@ -283,8 +283,7 @@ let botFactory = (function(){
 
                 min-height: 60px;
                 margin: 5px auto 0 0px;
-                font-size: 14px;
-                font-style: italic;
+                font-size: 15px;                
                 position:relative;
               }
               .botError {
@@ -768,7 +767,7 @@ let botFactory = (function(){
                 margin: 4px 2px;
                 display: inline-block;
                 padding: 5px 20px;
-                font-size: 15px;
+                font-size: 14px;
                 opacity: 1;
               }
 
@@ -1037,7 +1036,7 @@ let botFactory = (function(){
               }
               .mySlides.product .carousel1 span {
                 width: calc(64% - 20px);
-                margin-left: 10px;
+                margin-left: 20px;
                 margin-top: 10px;
               }
               .mySlides.product .circularchart {
@@ -1426,10 +1425,10 @@ let botFactory = (function(){
                         activeCarousel = activeSlide[0];
                     }
                     else if(!activeSlide.length && element.childNodes.length) {
-                        activeCarousel = element.querySelector(".carousel");
-                        activeCarousel.classList.add("active");
+                        activeCarousel = element.querySelector(".carousel");                        
                     }
                     if(activeCarousel) {
+                        activeCarousel.classList.add("active");
                         this.showSlides(parseInt(activeCarousel.getAttribute("slide"))+1, eIdx);
                     }
                 };
@@ -2012,9 +2011,9 @@ let botFactory = (function(){
                         });
                     }
                 }
-                if(sessionAttributes.slideObj){
-                  let slideObj = JSON.parse(sessionAttributes.slideObj);
-                  this.showproduct(slideObj);
+                if(sessionAttributes.slidesObj){
+                  let slidesObj = JSON.parse(sessionAttributes.slidesObj);
+                  this.showproduct(slidesObj);
                 }
                 if(sessionAttributes.slides) {
                     let slides = JSON.parse(sessionAttributes.slides);
@@ -2217,7 +2216,7 @@ let botFactory = (function(){
              * This method is used to display single slide
              * It's attributes are set inside the method
              */
-            if(slidelist.length > 1) {
+            if(slidelist) {
                 let firstSlideDiv = document.createElement("SPAN");
                 let firstSlide = slidelist[0];
                 firstSlideDiv.id = "single_"+curIdx;
@@ -2307,10 +2306,8 @@ let botFactory = (function(){
             for (let idx in slidelist) {
                 let slide = document.createElement("span");
                 slide.setAttribute("slide", idx);
-                slide.className = "carousel fadeSlide";
-                if(!that.sessionAttributes.productId) {
-                    slide.style.display = "none";
-                }
+                slide.className = "carousel fadeSlide";               
+                slide.style.display = "none";               
                 let img = document.createElement("img");
                 img.src = slidelist[idx].images[0] || slidelist[idx].image;
                 let span = document.createElement("span");
@@ -2419,12 +2416,9 @@ let botFactory = (function(){
                 responsePara1.appendChild(ni);
                 responsePara1.style.display = "none";
                 conversationDiv.appendChild(responsePara1);
-                this.sessionAttributes.isProduct = true;
+                
             }
-            else if(that.sessionAttributes.productId) {
-                document.getElementById(this.slideDivId+curIdx).classList.add("product");
-            }
-
+            this.sessionAttributes.isProduct = true;           
             /**
              * This line of code displays the currently active slide
              */
@@ -2443,18 +2437,10 @@ let botFactory = (function(){
           let that = this;
           this.slideIndex.push(1);
           let curIdx = document.getElementsByClassName("botSlides").length;
-          let conversationDiv = document.getElementById("oibot_conversation");
-          let trating=document.createElement("p");        
-          trating.className="rating";
-          let ax=document.createTextNode("Sleep Expert Rating From Goodbed.com");
-          trating.appendChild(ax);
-          if(product.length) {
-              conversationDiv.appendChild(trating);
-          }
-  
+          let conversationDiv = document.getElementById("oibot_conversation");          
           let responsePara = document.createElement("P");
           responsePara.setAttribute("id", this.slideDivId+curIdx);
-          responsePara.className = "botSlides mySlides fadeSlide";
+          responsePara.className = "botSlides mySlides product";
           let firstSlideDiv = document.createElement("span");
               let firstSlide = product;
               firstSlideDiv.id = "single_"+curIdx;              
@@ -2462,7 +2448,7 @@ let botFactory = (function(){
               slide.className = "carousel1 active";
               
               let img = document.createElement("img");
-              img.src = firstSlide.images;
+              img.src = firstSlide.images[0] || firstSlide.image;
               
               let innerHTML = firstSlide.name;
               let span = document.createElement("span");
@@ -2483,29 +2469,7 @@ let botFactory = (function(){
               prrat.appendChild(html);
               slide.appendChild(img);
               slide.appendChild(span);
-              slide.appendChild(prrat);
-  
-              slide.addEventListener("click", function() {
-                  if(this.parentNode.classList.contains("product")) {
-                      return false;
-                  }
-                  if(!this.classList.contains("active")) {
-                      that.showSlides(parseInt(this.getAttribute("slide"))+1, curIdx);
-                  }
-                  let product = this.childNodes[1];
-                  let msg = product.innerHTML.split("<")[0];
-                  let snAttr = that.sessionAttributes;
-                  if (product.getAttribute("value")) {
-                      snAttr.id = product.getAttribute("value");
-                      snAttr.productName = msg;
-                  }
-                  if(product.getAttribute("variationid")) {
-                      snAttr.variationId = product.getAttribute("variationid");
-                  }
-                  document.getElementById(that.slideDivId+curIdx).classList.add("disabled");
-                  that.showRequest(msg);
-                  that.sendRequest(msg, snAttr);
-              });
+              slide.appendChild(prrat);               
   
               firstSlideDiv.appendChild(slide);            
               responsePara.appendChild(firstSlideDiv);
