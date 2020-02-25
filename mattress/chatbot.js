@@ -6,8 +6,7 @@ let botFactory = (function(){
         this.sessionAttributes = {};
         this.slideIndex = [];
         this.slideDivId = "oibot_slides_";
-        this.initialChatScript = [{"isbefore":true,"text":"Welcome to Gates. Can I help you find your perfect mattress? " },
-        {"isbefore":false,"text":"Are you ready to find your mattress?" }];
+        this.initialChatScript = [{"isbefore":true,"text":"Welcome to Gates. Can I help you find your perfect mattress? " }]        
         this.assetsUrl = "https://mattressassets.s3.amazonaws.com/assets/";
 
         this.chatHTML = `
@@ -1275,7 +1274,7 @@ let botFactory = (function(){
                font-size:12px;
                margin-left:22px;
                margin-top:15px;
-                margin-bottom:10px;
+               margin-bottom:10px;
                color:white;    
                background-image: linear-gradient(174deg, #AFE78F 0%, #77CB56 100%);
                padding: 5px;
@@ -1790,42 +1789,16 @@ let botFactory = (function(){
 
             let responsePara = document.createElement("P");
             responsePara.setAttribute("id", "oibot_suggestions");
-            responsePara.className = "botOptionResponse";
-
-
-            // let pi = document.createElement("span");
-            // pi.className = "roundedNav1 prev1";
-            // pi.id="p1";
-            // let piArrow = document.createElement("img");
-            // piArrow.style.width="20px";
-            // piArrow.src = this.assetsUrl+"suggestion-left.png";
-            // pi.appendChild(piArrow);
-            // let ni = document.createElement("span");
-            // ni.className = "roundedNav1 next1";
-            // ni.id="n1";
-
-            // let niArrow = document.createElement("img");
-            // niArrow.style.width="20px";
-            // niArrow.src = this.assetsUrl+"suggestion-right.png";
-
-            // ni.appendChild(niArrow);
+            responsePara.className = "botOptionResponse";            
 
             let ns=document.createElement("span");
             ns.className="botSuggestionResponse";
-            ns.id="oibot_suggrow";
-            // responsePara.appendChild(pi);
-            // responsePara.appendChild(ni);
+            ns.id="oibot_suggrow";            
             window.onscroll = function () { window.scrollTo(0, 0); };
 
             /**
              *  This method assings Scroll action for scroll buttons present in the chat
-             */
-            // pi.addEventListener("click",function(){
-            //     document.getElementById("oibot_suggrow").scrollBy(-300,0);
-            // });
-            // ni.addEventListener("click",function(){
-            //     document.getElementById("oibot_suggrow").scrollBy(300,0);
-            // });
+             */            
             /**
              * This method assigns different attributes for the buttons available
              */
@@ -1833,7 +1806,7 @@ let botFactory = (function(){
                 let suggestion = suggestionList[idx];
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestion.name;
-                suggestionbtn.className = "objectbutton";
+                suggestionbtn.className = "optionbutton";
                 if(suggestion.id) {
                     suggestionbtn.setAttribute("value", suggestion.id);
                 }
@@ -1851,14 +1824,7 @@ let botFactory = (function(){
             }
 
             responsePara.appendChild(ns);
-            conversationDiv.appendChild(responsePara);
-            if(ns.scrollWidth < 300) {
-              /**
-               * Scroll buttons are removed if the width is less than 300px
-               */
-                responsePara.removeChild(pi);
-                responsePara.removeChild(ni);
-            }
+            conversationDiv.appendChild(responsePara);            
             conversationDiv.scrollTop = conversationDiv.scrollHeight;
         }
 
