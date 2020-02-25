@@ -1549,7 +1549,7 @@ let botFactory = (function(){
                     btns[idx].setAttribute("done", "true");
                     btns[idx].setAttribute("disabled", "");
                 }
-                that.showError("No internet connection please check your connectivity");
+                that.showError("No internet connection available. Please check your connectivity");
             }
             let sessionAttributes = this.sessionAttributes;
             if (snAttr) {
@@ -1587,7 +1587,7 @@ let botFactory = (function(){
                     if(err.statusCode)
                         that.showError("Error:  Please try again");
                     else
-                        that.showError("No internet connection please check your connectivity");
+                        that.showError("No internet connection available. Please check your connectivity");
                     if(callbackFn) {
                         callbackFn(false);
                     }
