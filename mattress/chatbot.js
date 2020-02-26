@@ -1854,8 +1854,12 @@ let botFactory = (function(){
                 carouselEle = carouselEle.previousSibling;
             }
             if(carouselEle) {
-                carouselEle = carouselEle.getElementsByClassName('carousel active');
-            }
+              let carouselEle1 = carouselEle.getElementsByClassName('carousel active');
+              if(!carouselEle1.length) {
+                carouselEle1 = carouselEle.getElementsByClassName('carousel1 active');
+              }
+              carouselEle = carouselEle1;
+          }
             if(carouselEle && carouselEle.length) {
                 let titleEle = carouselEle[0].querySelector('.title');
                 if(titleEle) {
