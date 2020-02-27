@@ -2209,6 +2209,13 @@ let botFactory = (function(){
             let ax=document.createTextNode("Sleep Expert Rating From Goodbed.com");
             trating.appendChild(ax);
             if(slidelist.length) {
+              let a=0;         
+              for(let i=0;i<slidelist.length;i++)  
+              {              
+                if(slidelist[i].rating!=0)           
+                a=1;
+              }
+              if(a==1)
                 conversationDiv.appendChild(trating);
             }
 
@@ -2275,7 +2282,9 @@ let botFactory = (function(){
                 prrat.appendChild(html);
                 slide.appendChild(img);
                 slide.appendChild(span);
-                slide.appendChild(prrat);
+                if(firstSlide.rating!=0){
+                  slide.appendChild(prrat);
+                }
 
                 slide.addEventListener("click", function() {
                     if(this.parentNode.classList.contains("product")) {
@@ -2349,7 +2358,9 @@ let botFactory = (function(){
 
                 slide.appendChild(img);
                 slide.appendChild(span);
-                slide.appendChild(prrat);
+                if(slidelist[idx].rating!=0){
+                  slide.appendChild(prrat);
+                }
 
                 slide.addEventListener("click", function() {
                     if(this.parentNode.classList.contains("product")) {
@@ -2473,7 +2484,9 @@ let botFactory = (function(){
               prrat.appendChild(html);
               slide.appendChild(img);
               slide.appendChild(span);
-              slide.appendChild(prrat);               
+              if(firstSlide.rating!=0){
+                slide.appendChild(prrat);
+              }              
   
               firstSlideDiv.appendChild(slide);            
               responsePara.appendChild(firstSlideDiv);
