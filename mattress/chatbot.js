@@ -1354,8 +1354,10 @@ let botFactory = (function(){
                     if(window.localStorage.getItem("isFromStorage")) {
                         document.getElementById("oibot_chaton").click();
                         let conversationDiv = document.getElementById("oibot_conversation");
-
                         let sbtn = document.getElementsByClassName('optionbutton');
+                        let userText = document.getElementById("oibot_userinput");
+                        userText.value = "...";
+                        userText.disabled = true;
                         for(let sIdx=0; sIdx<sbtn.length; sIdx++) {
                             sbtn[sIdx].addEventListener("click",function(){
                                 if(!this.classList.contains("close")) {
@@ -1716,6 +1718,9 @@ let botFactory = (function(){
            * This method assigns attributes to the corresponding buttons
            */
             for (let bIdx in buttons) {
+                let userText = document.getElementById("oibot_userinput");
+                userText.value = "...";
+                userText.disabled = true;
                 let button = document.createElement("span");
                 let data = buttons[bIdx];
                 button.innerHTML = data.name;
@@ -1733,10 +1738,7 @@ let botFactory = (function(){
                         let snAttr = that.sessionAttributes;
                         if (this.getAttribute("value")) {
                             snAttr.id = this.getAttribute("value");
-                        }
-                        let userText = document.getElementById("oibot_userinput");
-                        userText.value = "...";
-                        userText.disabled = true;
+                        }                        
                         that.showRequest(msg);
                         that.sendRequest(msg, snAttr);
 
@@ -1802,6 +1804,9 @@ let botFactory = (function(){
              * This method assigns different attributes for the buttons available
              */
             for (let idx in suggestionList) {
+                let userText = document.getElementById("oibot_userinput");
+                userText.value = "...";
+                userText.disabled = true;
                 let suggestion = suggestionList[idx];
                 let suggestionbtn = document.createElement("span");
                 suggestionbtn.innerHTML = suggestion.name;
@@ -2060,6 +2065,9 @@ let botFactory = (function(){
             let layout = document.getElementsByClassName("layout")[0];
             let chaticon = document.getElementById("oibot_chaton");
             let popMessage = document.getElementById("oibot_popup");
+            let userText = document.getElementById("oibot_userinput");
+            userText.disabled = false;
+            userText.value="";
 
             if(layout.style.display == "none" || layout.style.display == "") {
                 chaticon.style.display = "none";
@@ -2547,6 +2555,9 @@ let botFactory = (function(){
             let n=5;
             let a=[];
             let b=[];
+            let userText = document.getElementById("oibot_userinput");
+            userText.value = "...";
+            userText.disabled = true;
             for(let i=1;i<=5;i++,n--){
                 a[i]=document.createElement("input");
                 a[i].name="rate";
