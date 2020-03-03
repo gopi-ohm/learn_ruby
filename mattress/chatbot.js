@@ -2076,7 +2076,7 @@ let botFactory = (function(){
 
                 let messages=
                   {
-                    "suggestions":["Yes","Maybe later"]
+                    "suggestions":["Yes","May be later"]
                   }
                 let sn = {};
                 messages.messages = JSON.stringify(this.initialChatScript);
